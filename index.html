@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Al-Maktaba (আল-মাকতাবা)</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <script>
+      // Vite preload error recovery (classic chunk/dynamic-import issues in PWA upgrades)
+      window.addEventListener('vite:preloadError', (event) => {
+        console.warn('[Al-Maktaba] Preload error detected. Reloading page...');
+        window.location.reload();
+      });
+      
+      // Script dynamic loading error recovery
+      window.addEventListener('error', (event) => {
+        if (event.message && (event.message.includes('dynamically imported') || event.message.includes('Failed to fetch') || event.message.includes('chunk'))) {
+          console.warn('[Al-Maktaba] Script error detected. Reloading page...');
+          window.location.reload();
+        }
+      }, true);
+
+      // Absolute fail-safe: If the app starts but stays completely empty (blank white screen) for more than 4.5 seconds,
+      // do a silent soft page refresh to reconnect or load from cache fallback.
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML === "") {
+          console.warn('[Al-Maktaba] Blank white screen detected after 4.5s. Clearing sw/caches and reloading...');
+          
+          // Programmatic unregistration of service worker on crash to fall back to direct server
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+              for (const reg of registrations) {
+                reg.unregister();
+              }
+            });
+          }
+
+          // Programmatic cache-clear of old assets on crash
+          if ('caches' in window) {
+            caches.keys().then((keys) => {
+              for (const key of keys) {
+                caches.delete(key);
+              }
+            });
+          }
+
+          // Only do it once per session to avoid infinite reload loops
+          if (!sessionStorage.getItem('al_maktaba_auto_reloaded')) {
+            sessionStorage.setItem('al_maktaba_auto_reloaded', 'true');
+            window.location.reload();
+          } else {
+            // If already reloaded once and still blank, show a beautiful offline splash overlay with a Reload button!
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.backgroundColor = '#111827';
+            overlay.style.color = 'white';
+            overlay.style.display = 'flex';
+            overlay.style.flexDirection = 'column';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.padding = '24px';
+            overlay.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+            overlay.style.zIndex = '999999';
+            overlay.innerHTML = `
+              <div style="font-size: 64px; margin-bottom: 24px; animation: pulse 2s infinite;">🕌</div>
+              <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 12px; color: #fbbf24; text-align: center;">আল-মাকতাবা (Al-Maktaba)</h2>
+              <p style="font-size: 14px; color: #9ca3af; text-align: center; max-width: 300px; line-height: 1.6; margin-bottom: 28px;">
+                সার্ভার সংযোগে বা ইন্টারনেট সংযোগে কিছুটা বিলম্ব হচ্ছে। অনুগ্রহ করে নিচের বাটনটিতে চাপ দিয়ে রিফ্রেশ করুন।
+              </p>
+              <button onclick="sessionStorage.removeItem('al_maktaba_auto_reloaded'); window.location.reload();" style="background-color: #059669; color: white; font-weight: bold; border: none; padding: 14px 34px; border-radius: 9999px; font-size: 15px; cursor: pointer; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4); border: 1px solid #10b981; transition: all 0.2s;">
+                আবার লোড করুন (Reload App)
+              </button>
+            `;
+            document.body.appendChild(overlay);
+          }
+        }
+      }, 4500);
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

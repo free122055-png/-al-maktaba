@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Freehand&family=Galada&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hind Siliguri", "Inter", sans-serif;
+  --font-arabic: "Amiri", serif;
+  
+  --color-cream-bg: #F0F4F8;
+  --color-cream-card: #F0F4F8;
+  
+  --color-islam-green: #065F46;
+  --color-islam-green-light: #047857;
+  --color-gold-accent: #d97706;
+  --color-gold-metallic: #fbbf24;
+}
+
+/* Custom Neumorphic Styling Variables */
+:root {
+  --nm-bg: #F0F4F8;
+  --nm-shadow-flat: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+  --nm-shadow-inset: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+  --nm-shadow-button: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
+  --nm-shadow-xs: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+}
+
+body {
+  background-color: #F0F4F8;
+  color: #1e293b;
+}
+
+/* Neumorphic Flat Card */
+.nm-card {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-shadow-flat);
+  border-radius: 2rem;
+}
+
+/* Neumorphic Inset Panel */
+.nm-inset {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-shadow-inset);
+  border-radius: 1.25rem;
+}
+
+.nm-flat {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-shadow-flat);
+  border-radius: 1.5rem;
+}
+
+/* Neumorphic Green Card */
+.nm-card-green {
+  background: linear-gradient(145deg, #065F46, #047857);
+  box-shadow: 8px 8px 16px #bcc8d6, -6px -6px 14px #ffffff;
+}
+
+/* Neumorphic Gold Card/Button */
+.nm-gold {
+  background: linear-gradient(145deg, #fbbf24, #d97706);
+  box-shadow: 6px 6px 12px #cbd5e1, -4px -4px 10px #ffffff;
+}
+
+/* Glossy highlight effect */
+.glossy {
+  position: relative;
+  overflow: hidden;
+}
+
+.glossy::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.text-islamic {
+  color: #065F46;
+}
+
+/* Neumorphic Interactive Button */
+.nm-button {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-shadow-button);
+  border-radius: 1.25rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nm-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 10px 10px 20px #c1cad6, -10px -10px 20px #ffffff;
+}
+
+.nm-button:active {
+  transform: translateY(1px);
+  box-shadow: var(--nm-shadow-inset);
+}
+
+.nm-button-active {
+  box-shadow: var(--nm-shadow-inset);
+}
+
+/* Small Neumorphic elements */
+.nm-sm-card {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-shadow-xs);
+  border-radius: 1rem;
+}
+
+/* Custom gorgeous animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Soft scrollbar for reading */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F0F4F8;
+}
+::-webkit-scrollbar-thumb {
+  background: #065F46;
+  border-radius: 4px;
+}
+
